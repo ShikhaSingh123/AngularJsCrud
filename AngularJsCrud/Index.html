@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+</head>
+<body ng-app="EmployeeApp" ng-controller="LoginController">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 margin-top: 47px;">
+       <h3 style="text-align:center">Login Employee</h3>
+        <form class="form-horizontal" ng-submit="OnLogin()" role="form">
+
+            <div class="form-group">
+                <label for="UserName" class="col-sm-3 control-label">UserName</label>
+                <div class="col-sm-6">
+                    <input type="text" id="UserName" class="form-control" ng-model="login.userName" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-6">
+                    <input type="password" id="Password" class="form-control" ng-model="login.password" />
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="col-sm-3" ></div>
+                <input type="submit" value="Login" class="btn btn-info col-sm-offset-3"/>
+                <input type="reset" value="Reset" class="btn" /> <br />
+                <div class="col-sm-5"></div><a id="link-1" href="#" ng-click="createUser()"> New Customer?Create Login</a>
+            </div>
+        </form>
+    </div>
+    <script src="Scripts/app.js"></script>
+    <script src="Scripts/Controller/LoginController.js"></script>
+</body>
+</html>

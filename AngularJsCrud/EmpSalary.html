@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+</head>
+<body ng-app="EmployeeApp" ng-controller="EmpSalaryController" style="margin: 4%;">
+    <h3>Employee Salary </h3>
+    <form class="form-horizontal" ng-submit="onEdit()" role="form">
+        <div class="form-group">
+            <label for="Basic" class="col-sm-3 control-label">Basic</label>
+            <div class="col-sm-6">
+                <input type="text" id="Basic" class="form-control" ng-model="basic" ng-change="calSalary()" />
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+        <div class="form-group">
+            <label for="HRA" class="col-sm-3 control-label">HRA</label>
+            <div class="col-sm-6">
+                <input type="text" id="HRA" class="form-control" ng-model="hra" ng-change="calSalary()" />
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+        <div class="form-group">
+            <label for="TA" class="col-sm-3 control-label">TA</label>
+            <div class="col-sm-6">
+                <input type="text" id="TA" class="form-control" ng-model="ta" ng-change="calSalary()" />
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+        <div class="form-group">
+            <label for="SA" class="col-sm-3 control-label">SA</label>
+            <div class="col-sm-6">
+                <input type="text" id="SA" class="form-control" ng-model="sa" ng-change="calSalary()" />
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+        <div class="form-group">
+            <label for="Total" class="col-sm-3 control-label">Total Salary</label>
+            <div class="col-sm-6">
+                <input type="text" id="Total" class="form-control" ng-model="total" disabled />
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+        <input type="submit" value="Update" class="btn btn-info col-sm-offset-3" />
+        <input type="reset" value="Reset" ng-click="resetForm()" class="btn" /> <br />
+    </form>
+    <script src="Scripts/app.js"></script>
+    <script src="Scripts/Controller/EmpSalaryController.js"></script>
+</body>
+
+</html>
