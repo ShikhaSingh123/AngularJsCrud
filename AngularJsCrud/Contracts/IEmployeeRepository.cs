@@ -9,7 +9,7 @@ namespace AngularJsCrud.Contract
 {
     public interface IEmployeeRepository
     {
-        int OnLogin(LoginInfo loginInfo);
+        LoginInfo OnLogin(LoginInfo loginInfo);
         bool CreateUser(createUser createUser);
         List<EmployeeInfo> GetEmployeeById(int id);
         bool CreateEmployee(EmployeeInfo employeeInfo);

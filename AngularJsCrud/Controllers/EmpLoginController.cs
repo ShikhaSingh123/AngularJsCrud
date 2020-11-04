@@ -15,15 +15,18 @@ namespace AngularJsCrud.Controllers
         public EmpLoginController(IEmployeeRepository employeeRepository)
         {
             repository = employeeRepository;
-        }       
+        }
         [HttpPost]
-        public int validateLogin(LoginInfo loginInfo)
+        public LoginInfo validateLogin(LoginInfo loginInfo)
         {
+
             if (loginInfo.userName != null && loginInfo.password != null)
             {
                 return repository.OnLogin(loginInfo);
             }
-            return loginInfo.userId;
-        }      
+            return loginInfo;
+        }
+       
+
     }
 }

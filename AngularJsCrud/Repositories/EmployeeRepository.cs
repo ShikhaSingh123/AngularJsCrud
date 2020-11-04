@@ -12,32 +12,43 @@ namespace AngularJsCrud.Repositories
 {
     public class EmployeeRepository:IEmployeeRepository
     {
-
-        public int OnLogin(LoginInfo loginInfo)
+        public LoginInfo OnLogin(LoginInfo loginInfo)
         {
             SqlCommand cmd = new SqlCommand();
             sqlConnection obj_con = new sqlConnection();
-            int id;
             if (obj_con.con.State == ConnectionState.Closed)
             {
                 obj_con.con.Open();
             }
+
             try
             {
-                cmd.CommandText = "check_login";
+                cmd.CommandText = "check_login_new";
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Connection = obj_con.con;
                 cmd.Parameters.AddWithValue("@userName", loginInfo.userName);
-                cmd.Parameters.AddWithValue("@password", loginInfo.password);
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    loginInfo.userId = (int)dr[0];                  
-                }
+                cmd.Parameters.AddWithValue("@password", Utility.CheckPassword(loginInfo.password, selectEncryptPassword(loginInfo.userName)));
+                cmd.Parameters.AddWithValue("@msg", loginInfo.msg);
+                cmd.Parameters["@msg"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@msg"].SqlDbType = SqlDbType.VarChar;
+                cmd.Parameters["@msg"].Size = 100;
+                cmd.Parameters.AddWithValue("@userid", loginInfo.userId);
+                cmd.Parameters["@userid"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@userid"].SqlDbType = SqlDbType.Int;
+                cmd.Parameters["@userid"].Size = 100;
+                cmd.Parameters.AddWithValue("@status", loginInfo.userId);
+                cmd.Parameters["@status"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@status"].SqlDbType = SqlDbType.Int;
+                cmd.Parameters["@status"].Size = 100;
+                 cmd.ExecuteScalar();
+                loginInfo.msg = cmd.Parameters["@msg"].Value.ToString();
+                loginInfo.userId = Convert.ToInt32(cmd.Parameters["@userid"].Value);
+                loginInfo.status = Convert.ToInt32(cmd.Parameters["@status"].Value);
             }
             catch (Exception ex)
             {
-
+                loginInfo.msg = ex.Message;
+                loginInfo.status = 0;
             }
             finally
             {
@@ -45,9 +56,44 @@ namespace AngularJsCrud.Repositories
                 obj_con.con.Close();
                 obj_con.con.Dispose();
             }
-            id = loginInfo.userId;
-            return id;
+            return loginInfo;
         }
+
+        public string selectEncryptPassword(string username)
+        {
+            SqlCommand cmd = new SqlCommand();
+            sqlConnection obj_con = new sqlConnection();
+            string pswrd="";
+            if (obj_con.con.State == ConnectionState.Closed)
+            {
+                obj_con.con.Open();
+            }
+
+            try
+            {
+                cmd.CommandText = "select_encryt_pswrd";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = obj_con.con;
+                cmd.Parameters.AddWithValue("@userName", username);
+                cmd.Parameters.AddWithValue("@password", pswrd);
+                cmd.Parameters["@password"].Direction = ParameterDirection.Output;
+                cmd.Parameters["@password"].SqlDbType = SqlDbType.VarChar;
+                cmd.Parameters["@password"].Size = 100;
+                cmd.ExecuteScalar();
+                pswrd = cmd.Parameters["@password"].Value.ToString(); ;
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                cmd.Dispose();
+                obj_con.con.Close();
+                obj_con.con.Dispose();
+            }
+            return pswrd;
+        }
+
         public bool CreateUser(createUser createUser)
         {
             SqlCommand cmd = new SqlCommand();
@@ -64,7 +110,7 @@ namespace AngularJsCrud.Repositories
                 cmd.Connection = obj_con.con;
                 cmd.Parameters.AddWithValue("@firstName", createUser.firstName);
                 cmd.Parameters.AddWithValue("@lastName", createUser.lastName);
-                cmd.Parameters.AddWithValue("@password", createUser.password);
+                cmd.Parameters.AddWithValue("@password", Utility.Encryptpassword(createUser.password));
                 cmd.Parameters.AddWithValue("@emailId", createUser.emailId);
                 cmd.Parameters.AddWithValue("@phoneNo", createUser.phoneNo);
                 cmd.Parameters.AddWithValue("@isAdmin", createUser.isAdmin==true?1:0);
@@ -72,7 +118,6 @@ namespace AngularJsCrud.Repositories
             }
             catch (Exception ex)
             {
-
             }
             finally
             {
@@ -150,7 +195,7 @@ namespace AngularJsCrud.Repositories
                 cmd.Parameters.AddWithValue("@ta", employeeInfo.Ta);
                 cmd.Parameters.AddWithValue("@sa", employeeInfo.Sa);
                 cmd.Parameters.AddWithValue("@salary", employeeInfo.Salary);
-                cmd.Parameters.AddWithValue("@userId", 2);
+                cmd.Parameters.AddWithValue("@userId", employeeInfo.Userid);
                 noOfRows = cmd.ExecuteNonQuery();
             }
             catch(Exception ex)

@@ -22,12 +22,11 @@ namespace AngularJsCrud.Controllers
             return repository.GetEmployeeById(id);
         }
         [HttpPost]
-        public bool Post(EmployeeInfo employeeInfo)
+        public bool Post(EmployeeInfo employeeInfo,int Userid)
         {
             if (ModelState.IsValid)
             {
-                //var Session = System.Web.HttpContext.Current.Session;
-                //int id = Convert.ToInt32(Session["userId"]);
+                employeeInfo.Userid = Userid;
                 return repository.CreateEmployee(employeeInfo);
             }
             return false;
